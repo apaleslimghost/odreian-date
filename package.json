@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/quarterto/odreian-date/issues"
   },
-  "homepage": "https://github.com/quarterto/odreian-date#readme"
+  "homepage": "https://github.com/quarterto/odreian-date#readme",
+  "dependencies": {
+    "@quarterto/ordinal": "^1.0.0"
+  }
 }

@@ -1,3 +1,5 @@
+const ordinal = require('@quarterto/ordinal');
+
 const months = [
 	'Gathering',
 	'Dry',
@@ -150,12 +152,24 @@ class OdreianDate {
 		return this.monthIndex + 1;
 	}
 
-	get MMMM() {
+	get Mo() {
+		return this.M + ordinal(this.M);
+	}
+
+	get MM() {
 		return months[this.monthIndex];
+	}
+
+	get MMMM() {
+		return `the Month of ${months[this.monthIndex]}`;
 	}
 
 	get D() {
 		return this.dateIndex + 1;
+	}
+
+	get Do() {
+		return this.D + ordinal(this.D);
 	}
 
 	get d() {
