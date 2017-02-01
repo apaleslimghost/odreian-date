@@ -179,6 +179,14 @@ class OdreianDate {
 	get dddd() {
 		return days[this.dayIndex];
 	}
+
+	get lll() {
+		return this.format`${'dddd'}, ${'Do'} of ${'MM'}, ${'YY'}`;
+	}
+
+	get llll() {
+		return this.format`${'dddd'}, ${'Do'} of ${'MMMM'}, ${'YYYY'}`;
+	}
 }
 
 module.exports = OdreianDate;
