@@ -1,52 +1,52 @@
 const months = [
-	"Gathering",
-	"Dry",
-	"Grass",
-	"Flower",
-	"Fallow",
-	"Hay",
-	"Harvest",
-	"Barley",
-	"Wine",
-	"Slaughter",
-	"Wolves",
-	"Frost",
+	'Gathering',
+	'Dry',
+	'Grass',
+	'Flower',
+	'Fallow',
+	'Hay',
+	'Harvest',
+	'Barley',
+	'Wine',
+	'Slaughter',
+	'Wolves',
+	'Frost',
 ];
 
 const days = [
-	"Avandæ",
-	"Coreldæ",
-	"Moradæ",
-	"Bahamdæ",
-	"Sehandæ",
-	"Pelordæ",
+	'Avandæ',
+	'Coreldæ',
+	'Moradæ',
+	'Bahamdæ',
+	'Sehandæ',
+	'Pelordæ',
 ];
 
 const ages = [
-	"First Histories",
-	"Quarried Stone",
-	"Roads",
-	"Kingdom in Unity",
-	"Great Empire",
-	"Nine Kings",
+	'First Histories',
+	'Quarried Stone',
+	'Roads',
+	'Kingdom in Unity',
+	'Great Empire',
+	'Nine Kings',
 ];
 
 const ageEpochs = {
-	"First Histories": 0,
-	"Quarried Stone": 10295424000,
-	"Roads": 19066752000,
-	"Kingdom in Unity": 19004544000,
-	"Great Empire": 31383936000,
-	"Nine Kings": 48864384000,
+	'First Histories': 0,
+	'Quarried Stone': 10295424000,
+	'Roads': 19066752000,
+	'Kingdom in Unity': 19004544000,
+	'Great Empire': 31383936000,
+	'Nine Kings': 48864384000,
 };
 
 const ageAbbreviations = {
-	"First Histories": "FH",
-	"Quarried Stone": "QS",
-	"Roads": "R",
-	"Kingdom in Unity": "KU",
-	"Great Empire": "GE",
-	"Nine Kings": "NK",
+	'First Histories': 'FH',
+	'Quarried Stone': 'QS',
+	'Roads': 'R',
+	'Kingdom in Unity': 'KU',
+	'Great Empire': 'GE',
+	'Nine Kings': 'NK',
 };
 
 const secondsInMinute = 60;
@@ -84,9 +84,16 @@ class OdreianDate {
 			age = a;
 		}
 
+		if(ageEpochs[age] && ageEpochs[age] + secondsInYear > this.timestamp) {
+			return [previousAge(age), age];
+		}
+
 		return [age];
 	}
 
+	format(strings, ...vars) {
+		return strings.reduce((cat, string, i) => cat + string + (vars[i] in this ? this[vars[i]] : ''), '');
+	}
 
 	get year() {
 		return this.age.map(age => ({
@@ -103,7 +110,7 @@ class OdreianDate {
 		return this.timestamp - this.yearSeconds;
 	}
 
-	get month() {
+	get monthIndex() {
 		return Math.floor(this.yearSeconds / secondsInMonth);
 	}
 
@@ -111,12 +118,52 @@ class OdreianDate {
 		return this.timestamp % secondsInMonth;
 	}
 
-	get startOfmonth() {
+	get startOfMonth() {
 		return this.timestamp - this.monthSeconds;
 	}
 
-	get date() {
+	get dateIndex() {
 		return Math.floor(this.monthSeconds / secondsInDay);
+	}
+
+	get dayIndex() {
+		return this.dateIndex % daysInWeek;
+	}
+
+	get daySeconds() {
+		return this.timestamp % secondsInDay;
+	}
+
+	get startOfDay() {
+		return this.timestamp - this.daySeconds;
+	}
+
+	get YY() {
+		return this.year.map(({year, age}) => `${year}${ageAbbreviations[age]}`).join('/');
+	}
+
+	get YYYY() {
+		return this.year.map(({year, age}) => `${year}, Age of ${age}`).join('/');
+	}
+
+	get M() {
+		return this.monthIndex + 1;
+	}
+
+	get MMMM() {
+		return months[this.monthIndex];
+	}
+
+	get D() {
+		return this.dateIndex + 1;
+	}
+
+	get d() {
+		return this.dayIndex;
+	}
+
+	get dddd() {
+		return days[this.dayIndex];
 	}
 }
 
