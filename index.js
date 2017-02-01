@@ -59,7 +59,8 @@ const daysInMonth = 30;
 const daysInWeek = days.length;
 const monthsInYear = months.length;
 
-const secondsInDay = secondsInMinute * minutesInHour * hoursInDay;
+const secondsInHour = secondsInMinute * minutesInHour;
+const secondsInDay = secondsInHour * hoursInDay;
 const secondsInWeek = secondsInDay * daysInWeek;
 const secondsInMonth = secondsInDay * daysInMonth;
 const secondsInYear = secondsInMonth * monthsInYear;
@@ -108,20 +109,12 @@ class OdreianDate {
 		return this.timestamp % secondsInYear;
 	}
 
-	get startOfYear() {
-		return this.timestamp - this.yearSeconds;
-	}
-
 	get monthIndex() {
 		return Math.floor(this.yearSeconds / secondsInMonth);
 	}
 
 	get monthSeconds() {
 		return this.timestamp % secondsInMonth;
-	}
-
-	get startOfMonth() {
-		return this.timestamp - this.monthSeconds;
 	}
 
 	get dateIndex() {
@@ -136,8 +129,20 @@ class OdreianDate {
 		return this.timestamp % secondsInDay;
 	}
 
-	get startOfDay() {
-		return this.timestamp - this.daySeconds;
+	get hour() {
+		return Math.floor(this.daySeconds / secondsInHour);
+	}
+
+	get hourSeconds() {
+		return this.timestamp % secondsInHour;
+	}
+
+	get minute() {
+		return Math.floor(this.hourSeconds / secondsInMinute);
+	}
+
+	get second() {
+		return this.timestamp % secondsInMinute;
 	}
 
 	get YY() {
@@ -180,12 +185,60 @@ class OdreianDate {
 		return days[this.dayIndex];
 	}
 
+	get H() {
+		return this.hour;
+	}
+
+	get h() {
+		return this.hour % 12;
+	}
+
+	get a() {
+		return this.hour >= 12 ? 'pm' : 'am';
+	}
+
+	get mm() {
+		return (this.minute < 10 ? '0' : '') + this.minute;
+	}
+
+	get ss() {
+		return (this.second < 10 ? '0' : '') + this.second;
+	}
+
+	get LT() {
+		return this.format`${'h'}:${'mm'}${'a'}`;
+	}
+
+	get LTS() {
+		return this.format`${'h'}:${'mm'}:${'ss'}${'a'}`;
+	}
+
+	get l() {
+		return this.format`${'D'}/${'M'}/${'YY'}`;
+	}
+
+	get ll() {
+		return this.format`${'Do'} of ${'MM'}, ${'YY'}`;
+	}
+
+	get LL() {
+		return this.format`${'Do'} of ${'MMMM'}, ${'YYYY'}`;
+	}
+
 	get lll() {
-		return this.format`${'dddd'}, ${'Do'} of ${'MM'}, ${'YY'}`;
+		return this.format`${'dddd'}, ${'ll'}`;
+	}
+
+	get LLL() {
+		return this.format`${'dddd'}, ${'LL'}`;
 	}
 
 	get llll() {
-		return this.format`${'dddd'}, ${'Do'} of ${'MMMM'}, ${'YYYY'}`;
+		return this.format`${'LT'}, ${'lll'}`;
+	}
+
+	get LLLL() {
+		return this.format`${'LT'}, ${'LLL'}`;
 	}
 }
 
