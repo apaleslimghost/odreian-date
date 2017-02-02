@@ -190,7 +190,7 @@ class OdreianDate {
 	}
 
 	get h() {
-		return this.hour % 12;
+		return this.hour % 12 || 12;
 	}
 
 	get a() {
