@@ -69,6 +69,39 @@ const epochYear = (timestamp, epoch) => Math.floor(1 + (timestamp - epoch) / sec
 const previousAge = age => ages[ages.indexOf(age) - 1];
 
 class OdreianDate {
+	static parse(string) {
+		const [
+			matches,
+			hourString,
+			minuteString,
+			ampm,
+			dayString,
+			dateString,
+			monthString,
+			yearString,
+			ageString
+		] = string.match(/(\d?\d):(\d\d)([ap]m), (\w+dæ), (\d\d?)\w\w of (\w+), (\d+)(\w+)/) || [false];
+
+		if(!matches) throw new Error(`Could not parse date ${string}`);
+
+		const [hour12, minute, date, year] = [hourString, minuteString, dateString, yearString].map(s => parseInt(s, 10));
+		const hour = (hour12 === 12 ? 0 : hour12) + (ampm === 'pm' ? 12 : 0);
+
+		const monthIndex = months.indexOf(monthString);
+
+		const age = Object.keys(ageAbbreviations).find(abbr => ageAbbreviations[abbr] === ageString);
+		const ageEpoch = ageEpochs[age];
+
+		return new OdreianDate(
+			ageEpoch +
+			secondsInYear * (year - 1) +
+			secondsInMonth * monthIndex +
+			secondsInDay * (date - 1) +
+			secondsInHour * hour +
+			secondsInMinute * minute
+		);
+	}
+
 	constructor(timestamp) {
 		this.timestamp = timestamp;
 	}
