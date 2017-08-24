@@ -24,33 +24,6 @@ const days = [
 	'Pelordæ',
 ];
 
-const ages = [
-	'First Histories',
-	'Quarried Stone',
-	'Roads',
-	'Kingdom in Unity',
-	'Great Empire',
-	'Nine Kings',
-];
-
-const ageEpochs = {
-	'First Histories': 0,
-	'Quarried Stone': 10295424000,
-	'Roads': 19066752000,
-	'Kingdom in Unity': 19004544000,
-	'Great Empire': 31383936000,
-	'Nine Kings': 48864384000,
-};
-
-const ageAbbreviations = {
-	'First Histories': 'FH',
-	'Quarried Stone': 'QS',
-	'Roads': 'R',
-	'Kingdom in Unity': 'KU',
-	'Great Empire': 'GE',
-	'Nine Kings': 'NK',
-};
-
 const secondsInMinute = 60;
 const minutesInHour = 60;
 const hoursInDay = 24;
@@ -64,6 +37,41 @@ const secondsInDay = secondsInHour * hoursInDay;
 const secondsInWeek = secondsInDay * daysInWeek;
 const secondsInMonth = secondsInDay * daysInMonth;
 const secondsInYear = secondsInMonth * monthsInYear;
+
+const ages = [
+	'First Histories',
+	'Quarried Stone',
+	'Roads',
+	'Kingdom in Unity',
+	'Great Empire',
+	'Nine Kings',
+];
+
+const ageYears = [332, 281, 101, 298, 563];
+
+const ageEpochs = ageYears.reduce(
+	({epochs, total}, years, i) => ({
+		epochs: Object.assign(epochs, {
+			[ages[i + 1]]: total + (years - 1) * secondsInYear
+		}),
+		total: total + (years - 1) * secondsInYear,
+	}),
+	{
+		epochs: {
+			'First Histories': 0
+		},
+		total: 0,
+	}
+).epochs;
+
+const ageAbbreviations = {
+	'First Histories': 'FH',
+	'Quarried Stone': 'QS',
+	'Roads': 'R',
+	'Kingdom in Unity': 'KU',
+	'Great Empire': 'GE',
+	'Nine Kings': 'NK',
+};
 
 const epochYear = (timestamp, epoch) => Math.floor(1 + (timestamp - epoch) / secondsInYear);
 const previousAge = age => ages[ages.indexOf(age) - 1];
