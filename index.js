@@ -47,22 +47,32 @@ const ages = [
 	'Nine Kings',
 ];
 
-const ageYears = [332, 281, 101, 298, 563];
+const ageLengths = [
+	[331, 0, 0],
+	[280, 0, 0],
+	[100, 0, 0],
+	[297, 0, 0],
+	[562, 0, 0]
+].map(
+	([y, m, d]) =>
+		y * secondsInYear +
+		m * secondsInMonth +
+		d * secondsInDay
+);
 
-const ageEpochs = ageYears.reduce(
-	({epochs, total}, years, i) => ({
-		epochs: Object.assign(epochs, {
-			[ages[i + 1]]: total + (years - 1) * secondsInYear
-		}),
-		total: total + (years - 1) * secondsInYear,
+const epochs = ageLengths.reduce(
+	(lengths, length) => lengths.concat(
+		lengths[lengths.length - 1] + length // argh
+	),
+	[0]
+);
+
+const ageEpochs = ages.reduce(
+	(ageEpochs, age, i) => Object.assign(ageEpochs, {
+		[age]: epochs[i],
 	}),
-	{
-		epochs: {
-			'First Histories': 0
-		},
-		total: 0,
-	}
-).epochs;
+	{}
+);
 
 const ageAbbreviations = {
 	'First Histories': 'FH',
