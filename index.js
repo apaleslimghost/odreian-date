@@ -48,17 +48,12 @@ const ages = [
 ];
 
 const ageLengths = [
-	[331, 0, 0],
-	[280, 0, 0],
-	[100, 0, 0],
-	[297, 0, 0],
-	[562, 0, 0]
-].map(
-	([y, m, d]) =>
-		y * secondsInYear +
-		m * secondsInMonth +
-		d * secondsInDay
-);
+	331,
+	280,
+	100,
+	297,
+	562,
+].map(y => y * secondsInYear);
 
 const epochs = ageLengths.reduce(
 	(lengths, length) => lengths.concat(
