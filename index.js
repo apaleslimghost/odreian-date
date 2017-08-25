@@ -114,12 +114,12 @@ class OdreianDate {
 	}
 
 	static from({age, year, month, date, hour = 0, minute = 0, second = 0}) {
-		const age = Object.keys(ageAbbreviations)
-			.find(
-				abbr => ageAbbreviations[abbr] === ageString
-			);
-
-		const ageEpoch = ageEpochs[age];
+		const ageEpoch = ageEpochs[
+			Object.keys(ageAbbreviations)
+				.find(
+					abbr => ageAbbreviations[abbr] === age
+				)
+		];
 
 		return new OdreianDate(
 			ageEpoch +
