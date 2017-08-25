@@ -306,7 +306,7 @@ class OdreianDate {
 }
 
 Object.assign(OdreianDate, {
-	months, days, ages, ageEpochs
+	months, days, ages, ageEpochs, ageAbbreviations,
 });
 
 module.exports = OdreianDate;
