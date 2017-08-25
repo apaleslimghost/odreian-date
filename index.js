@@ -97,21 +97,38 @@ class OdreianDate {
 
 		if(!matches) throw new Error(`Could not parse date ${string}`);
 
-		const [hour12, minute, date, year] = [hourString, minuteString, dateString, yearString].map(s => parseInt(s, 10));
+		const [hour12, minute, date, year] = [
+			hourString,
+			minuteString,
+			dateString,
+			yearString,
+		].map(s => parseInt(s, 10));
+
 		const hour = (hour12 === 12 ? 0 : hour12) + (ampm === 'pm' ? 12 : 0);
+		const month = months.indexOf(monthString) + 1;
 
-		const monthIndex = months.indexOf(monthString);
+		return this.from({
+			age: ageString,
+			year, month, date, hour, minute,
+		});
+	}
 
-		const age = Object.keys(ageAbbreviations).find(abbr => ageAbbreviations[abbr] === ageString);
+	static from({age, year, month, date, hour = 0, minute = 0, second = 0}) {
+		const age = Object.keys(ageAbbreviations)
+			.find(
+				abbr => ageAbbreviations[abbr] === ageString
+			);
+
 		const ageEpoch = ageEpochs[age];
 
 		return new OdreianDate(
 			ageEpoch +
 			secondsInYear * (year - 1) +
-			secondsInMonth * monthIndex +
+			secondsInMonth * (month - 1) +
 			secondsInDay * (date - 1) +
 			secondsInHour * hour +
-			secondsInMinute * minute
+			secondsInMinute * minute +
+			second
 		);
 	}
 
