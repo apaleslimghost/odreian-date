@@ -2,7 +2,10 @@
   "name": "odreian-date",
   "version": "2.1.2",
   "description": "",
-  "main": "index.js",
+  "main": "dist.js",
+  "scripts": {
+    "prepublish": "make"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/quarterto/odreian-date.git"
@@ -16,5 +19,8 @@
   "homepage": "https://github.com/quarterto/odreian-date#readme",
   "dependencies": {
     "@quarterto/ordinal": "^1.0.0"
+  },
+  "devDependencies": {
+    "buble": "^0.15.2"
   }
 }
